@@ -16,19 +16,24 @@
 <body>
   <header class="topbar">
     <div>
-      <div class="eyebrow">Meine Pflanzendatenbank</div>
-      <h1>Meine Pflanzen</h1>
+      <div class="eyebrow">Meine Pflanzendatenbank · v1.1</div>
+      <h1 id="pageTitle">Meine Pflanzen</h1>
       <div id="plantCount" class="subline">0 Pflanzen gespeichert</div>
     </div>
     <button id="settingsBtn" class="icon-btn" type="button" aria-label="Daten und Backup öffnen">⋯</button>
   </header>
 
   <main>
+    <nav class="section-tabs" aria-label="Bereiche">
+      <button class="section-tab active" type="button" data-section="owned">🌿 Meine Pflanzen</button>
+      <button class="section-tab" type="button" data-section="wishlist">♡ Für später</button>
+    </nav>
+
     <section class="hero-card" aria-labelledby="heroTitle">
       <div>
-        <span class="hero-icon" aria-hidden="true">🌿</span>
+        <span id="heroIcon" class="hero-icon" aria-hidden="true">🌿</span>
         <h2 id="heroTitle">Alles Wichtige an einem Ort</h2>
-        <p>Fotos, Standort, Pflege und Beobachtungen zu deinen Pflanzen – lokal auf diesem Gerät gespeichert.</p>
+        <p id="heroText">Fotos, Standort, Pflege und Beobachtungen zu deinen Pflanzen – lokal auf diesem Gerät gespeichert.</p>
       </div>
       <button id="addPlantBtn" class="primary" type="button">＋ Pflanze hinzufügen</button>
     </section>
@@ -38,18 +43,24 @@
         <span aria-hidden="true">⌕</span>
         <input id="searchInput" type="search" inputmode="search" autocomplete="off" placeholder="Pflanze, Standort oder Notiz suchen …">
       </label>
-      <div class="chips" role="group" aria-label="Filter">
-        <button class="chip active" type="button" data-filter="all">Alle</button>
-        <button class="chip" type="button" data-filter="Terrasse">Terrasse</button>
-        <button class="chip" type="button" data-filter="Wohnung">Wohnung</button>
-        <button class="chip" type="button" data-filter="Achtung">Pflegebedarf</button>
+      <div id="ownedFilters">
+        <div class="chips" role="group" aria-label="Schnellfilter">
+          <button class="chip active" type="button" data-filter="all">Alle</button>
+          <button class="chip" type="button" data-filter="Terrasse">Terrasse</button>
+          <button class="chip" type="button" data-filter="Wohnung">Wohnung</button>
+          <button class="chip" type="button" data-filter="Achtung">Pflegebedarf</button>
+        </div>
+        <div class="filter-selects">
+          <label><span>Überwinterung</span><select id="winterFilter"><option value="all">Alle</option><option value="winterhart">Draußen winterhart</option><option value="frostfrei">Frostfrei</option><option value="drinnen">Drinnen</option><option value="nicht-noetig">Nicht nötig</option><option value="unbekannt">Noch offen</option></select></label>
+          <label><span>Lebensdauer</span><select id="lifespanFilter"><option value="all">Alle</option><option value="einjaehrig">Einjährig</option><option value="mehrjaehrig">Mehrjährig</option><option value="unbekannt">Noch offen</option></select></label>
+        </div>
       </div>
     </section>
 
     <section id="emptyState" class="empty-state">
-      <div class="empty-plant" aria-hidden="true">🪴</div>
-      <h2>Noch keine Pflanzen</h2>
-      <p>Lege deine erste Pflanze an. Ein Name reicht – alles Weitere kannst du später ergänzen.</p>
+      <div id="emptyIcon" class="empty-plant" aria-hidden="true">🪴</div>
+      <h2 id="emptyTitle">Noch keine Pflanzen</h2>
+      <p id="emptyText">Lege deine erste Pflanze an. Ein Name reicht – alles Weitere kannst du später ergänzen.</p>
       <button id="emptyAddBtn" class="primary" type="button">Erste Pflanze anlegen</button>
     </section>
 
@@ -66,6 +77,7 @@
 
     <form id="plantForm">
       <input id="plantId" type="hidden">
+      <input id="collectionInput" type="hidden" value="owned">
 
       <div class="photo-editor">
         <div id="photoPreview" class="photo-preview"><span aria-hidden="true">📷</span></div>
@@ -78,82 +90,38 @@
       </div>
 
       <div class="form-grid">
-        <label class="field full">
-          <span>Name *</span>
-          <input id="nameInput" type="text" required maxlength="100" autocomplete="off" placeholder="z. B. Agapanthus">
-        </label>
+        <label class="field full"><span>Name *</span><input id="nameInput" type="text" required maxlength="100" autocomplete="off" placeholder="z. B. Agapanthus"></label>
+        <label class="field full"><span>Botanischer Name</span><input id="botanicalInput" type="text" maxlength="120" autocomplete="off" placeholder="optional"></label>
 
-        <label class="field full">
-          <span>Botanischer Name</span>
-          <input id="botanicalInput" type="text" maxlength="120" autocomplete="off" placeholder="optional">
-        </label>
+        <label class="field owned-only"><span>Bereich</span><select id="areaInput"><option>Terrasse</option><option>Wohnung</option></select></label>
+        <label class="field owned-only"><span>Zustand</span><select id="statusInput"><option>Gut</option><option>Beobachten</option><option>Achtung</option></select></label>
 
-        <label class="field">
-          <span>Bereich</span>
-          <select id="areaInput">
-            <option>Terrasse</option>
-            <option>Wohnung</option>
-          </select>
-        </label>
+        <label class="field"><span>Lebensdauer</span><select id="lifespanInput"><option value="unbekannt">Noch offen</option><option value="einjaehrig">Einjährig</option><option value="mehrjaehrig">Mehrjährig</option></select></label>
+        <label class="field owned-only"><span>Überwinterung</span><select id="winterTypeInput"><option value="unbekannt">Noch offen</option><option value="winterhart">Draußen winterhart</option><option value="frostfrei">Frostfrei überwintern</option><option value="drinnen">Drinnen überwintern</option><option value="nicht-noetig">Nicht nötig</option></select></label>
 
-        <label class="field">
-          <span>Zustand</span>
-          <select id="statusInput">
-            <option>Gut</option>
-            <option>Beobachten</option>
-            <option>Achtung</option>
-          </select>
-        </label>
+        <label class="field full owned-only"><span>Genauer Standort</span><input id="spotInput" type="text" maxlength="120" placeholder="z. B. Terrasse Süd, großer grauer Kübel"></label>
+        <label class="field owned-only"><span>Licht</span><select id="lightInput"><option>Sonne</option><option>Halbschatten</option><option>Schatten</option><option>Hell, indirekt</option></select></label>
+        <label class="field owned-only"><span>Topf / Kübel</span><input id="potInput" type="text" maxlength="100" placeholder="z. B. Ø 40 cm"></label>
 
-        <label class="field full">
-          <span>Genauer Standort</span>
-          <input id="spotInput" type="text" maxlength="120" placeholder="z. B. Terrasse Süd, großer grauer Kübel">
-        </label>
+        <label class="field full wishlist-only hidden"><span>Geplanter Platz</span><input id="plannedSpotInput" type="text" maxlength="160" placeholder="z. B. großer Kübel auf der Südterrasse"></label>
+        <label class="field wishlist-only hidden"><span>Für welches Jahr?</span><input id="plannedYearInput" type="number" inputmode="numeric" min="2026" max="2100" placeholder="z. B. 2027"></label>
+        <label class="field wishlist-only hidden"><span>Priorität</span><select id="wishPriorityInput"><option value="normal">Merken</option><option value="hoch">Unbedingt</option><option value="niedrig">Vielleicht</option></select></label>
+        <label class="field full wishlist-only hidden"><span>Warum möchte ich sie?</span><textarea id="wishReasonInput" rows="2" maxlength="800" placeholder="Farbe, Blüte, Sichtschutz, Empfehlung …"></textarea></label>
 
-        <label class="field">
-          <span>Licht</span>
-          <select id="lightInput">
-            <option>Sonne</option>
-            <option>Halbschatten</option>
-            <option>Schatten</option>
-            <option>Hell, indirekt</option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span>Topf / Kübel</span>
-          <input id="potInput" type="text" maxlength="100" placeholder="z. B. Ø 40 cm">
-        </label>
-
-        <label class="field full">
-          <span>Gießen</span>
-          <textarea id="wateringInput" rows="2" maxlength="600" placeholder="z. B. gleichmäßig feucht, keine Staunässe"></textarea>
-        </label>
-
-        <label class="field full">
-          <span>Düngen</span>
-          <textarea id="fertilizingInput" rows="2" maxlength="600" placeholder="z. B. April–August alle 2 Wochen"></textarea>
-        </label>
-
-        <label class="field full">
-          <span>Überwinterung</span>
-          <textarea id="winterInput" rows="2" maxlength="600" placeholder="z. B. hell und frostfrei"></textarea>
-        </label>
-
-        <label class="field full">
-          <span>Meine Notizen</span>
-          <textarea id="notesInput" rows="4" maxlength="1800" placeholder="Beobachtungen, Kaufdatum, Besonderheiten …"></textarea>
-        </label>
-
-        <label class="field full">
-          <span>Eigener Gärtner-Hinweis</span>
-          <textarea id="gardenerInput" rows="3" maxlength="1200" placeholder="Optionaler Pflegehinweis"></textarea>
-        </label>
+        <label class="field full owned-only"><span>Gießen</span><textarea id="wateringInput" rows="2" maxlength="600" placeholder="z. B. gleichmäßig feucht, keine Staunässe"></textarea></label>
+        <label class="field full owned-only"><span>Düngen</span><textarea id="fertilizingInput" rows="2" maxlength="600" placeholder="z. B. April–August alle 2 Wochen"></textarea></label>
+        <label class="field full owned-only"><span>Überwinterungsdetails</span><textarea id="winterInput" rows="2" maxlength="600" placeholder="z. B. hell, 5–10 °C, sparsam gießen"></textarea></label>
+        <label class="field full"><span>Meine Notizen</span><textarea id="notesInput" rows="4" maxlength="1800" placeholder="Beobachtungen, Kaufidee, Besonderheiten …"></textarea></label>
+        <label class="field full owned-only"><span>Eigener Gärtner-Hinweis</span><textarea id="gardenerInput" rows="3" maxlength="1200" placeholder="Optionaler Pflegehinweis"></textarea></label>
       </div>
 
-      <div class="generated-tip">
-        <strong>Gärtner-Tipp</strong>
-        <p id="generatedTipText"></p>
+      <div id="generatedTipBox" class="generated-tip">
+        <strong>Gärtner-Tipp</strong><p id="generatedTipText"></p>
+      </div>
+
+      <div class="assistant-inline">
+        <div><strong>✨ ChatGPT fragen</strong><p>Frage mit dem gespeicherten Pflanzenwissen stellen und die Antwort anschließend in den Steckbrief übernehmen.</p></div>
+        <button id="askPlantBtn" class="secondary" type="button">Frage stellen</button>
       </div>
 
       <div class="sheet-actions">
@@ -165,18 +133,27 @@
     </form>
   </dialog>
 
-  <dialog id="dataDialog" class="sheet-dialog compact">
-    <div class="sheet-head">
-      <h2>Daten & Backup</h2>
-      <button id="closeDataBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button>
+  <dialog id="assistantDialog" class="sheet-dialog compact">
+    <div class="sheet-head"><h2>✨ ChatGPT fragen</h2><button id="closeAssistantBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button></div>
+    <div class="data-panel">
+      <p class="assistant-explain">Die App schickt nichts automatisch ins Internet. Sie kopiert einen fertigen Prompt. In ChatGPT einfügen, Antwort kopieren und hier wieder einsetzen.</p>
+      <label class="field"><span>Deine Frage</span><textarea id="questionInput" rows="4" maxlength="1600" placeholder="z. B. Kann diese Pflanze draußen überwintern? Warum werden die Blätter gelb?"></textarea></label>
+      <button id="copyPromptBtn" class="primary wide" type="button">1. Frage für ChatGPT kopieren</button>
+      <button id="openChatGPTBtn" class="secondary wide" type="button">2. ChatGPT öffnen</button>
+      <hr class="divider">
+      <label class="field"><span>Antwort von ChatGPT</span><textarea id="answerInput" rows="8" placeholder="Komplette Antwort hier einfügen …"></textarea></label>
+      <button id="applyAnswerBtn" class="primary wide" type="button">3. Antwort auswerten & übernehmen</button>
+      <p id="assistantStatus" class="fineprint assistant-status"></p>
     </div>
+  </dialog>
+
+  <dialog id="dataDialog" class="sheet-dialog compact">
+    <div class="sheet-head"><h2>Daten & Backup</h2><button id="closeDataBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button></div>
     <div class="data-panel">
       <h3>Deine Daten bleiben auf dem Handy</h3>
       <p>Die Pflanzen und Fotos werden lokal in diesem Browser gespeichert. GitHub enthält nur die App, nicht deine privaten Einträge.</p>
       <button id="exportBtn" class="primary wide" type="button">Backup exportieren</button>
-
-      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
-
+      <hr class="divider">
       <h3>Backup wiederherstellen</h3>
       <p>Ein Import ergänzt vorhandene Einträge. Pflanzen mit derselben ID werden mit dem Stand aus dem Backup aktualisiert.</p>
       <label class="secondary wide center" for="importInput">Backup-Datei auswählen</label>
@@ -186,7 +163,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
   <script src="app.js" defer></script>
 </body>
 </html>

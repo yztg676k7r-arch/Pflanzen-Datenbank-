@@ -1,31 +1,23 @@
-# Pflanzen Datenbank v1.0
+# Pflanzen Datenbank v1.1
 
-Private, kostenlose Web-App für die persönliche Pflanzenverwaltung auf dem Handy. Sie kann statisch über GitHub Pages gehostet werden und benötigt weder Server noch API oder kostenpflichtige Datenbank.
+Private, kostenlose Web-App für die persönliche Pflanzenverwaltung auf dem Handy. Statisch über GitHub Pages, ohne Server, kostenpflichtige Datenbank oder API.
 
-## Funktionen in v1.0
-- Pflanzen mit Foto anlegen, bearbeiten und löschen
-- Terrasse/Wohnung, genauer Standort, Licht, Zustand und Topf/Kübel erfassen
-- Gießen, Düngen, Überwinterung und persönliche Notizen speichern
-- regelbasierte Gärtner-Hinweise ohne externe KI/API
-- schnelle Suche und Filter für Terrasse, Wohnung und Pflegebedarf
-- lokale Speicherung inklusive Fotos über IndexedDB
-- JSON-Backup mit Export und Import
-- PWA-/Offline-Unterstützung über Service Worker
-- iPhone-optimiertes Layout inklusive Safe Areas und Dark Mode
+## Neu in v1.1
+- Filter nach Überwinterungsart: draußen winterhart, frostfrei, drinnen, nicht nötig, noch offen
+- Filter und Steckbrief-Feld für einjährig / mehrjährig
+- separater Bereich **„Für später“** für Pflanzen, die erst künftig angeschafft oder gepflanzt werden sollen
+- Wunschpflanzen mit geplantem Platz, Jahr, Priorität und Grund/Notizen
+- Wunschpflanzen können mit **„Jetzt eingepflanzt“** in den normalen Bestand verschoben werden
+- **ChatGPT fragen** direkt aus dem Pflanzen-Steckbrief: Die App erstellt einen kontextreichen Prompt und kann strukturierte Angaben aus der zurückkopierten Antwort in die Formularfelder übernehmen
+- keine API-Kosten und kein API-Schlüssel in der App
 
-## GitHub Pages veröffentlichen
-1. Neues GitHub-Repository erstellen, z. B. `pflanzen-datenbank`.
-2. Alle Dateien aus diesem Ordner direkt in das Hauptverzeichnis des Repositories hochladen.
-3. In GitHub `Settings` > `Pages` öffnen.
-4. Unter `Build and deployment` die Quelle `Deploy from a branch` wählen.
-5. Branch `main` und Ordner `/ (root)` auswählen und speichern.
-6. Die von GitHub angezeigte Pages-Adresse auf dem iPhone öffnen.
-7. In Safari über `Teilen` > `Zum Home-Bildschirm` installieren.
+## Wichtig zur ChatGPT-Funktion
+Die GitHub-Pages-App sendet keine Pflanzendaten automatisch an OpenAI. Beim Tippen auf „Frage für ChatGPT kopieren“ wird nur lokal ein Prompt erzeugt und in die Zwischenablage kopiert. Danach wird ChatGPT separat geöffnet. Die Antwort kann zurück in die App kopiert und ausgewertet werden.
 
 ## Datenspeicherung
-Die Pflanzen-Daten liegen in v1.0 ausschließlich lokal im Browser des Geräts. GitHub erhält keine privaten Pflanzendaten oder Fotos.
+Alle Pflanzen, Wunschpflanzen und Fotos liegen lokal in IndexedDB des Browsers. Bestehende v1.0-Daten bleiben erhalten; fehlende neue Felder werden automatisch als „noch offen“ behandelt.
 
-Wichtig: Browserdaten können durch Löschen von Website-Daten verloren gehen. Deshalb regelmäßig über `…` > `Daten & Backup` ein Backup exportieren und in der Dateien-App sichern.
+Regelmäßig über `…` > `Daten & Backup` eine JSON-Sicherung exportieren, besonders vor größeren Browser-/Geräteänderungen.
 
-## Updates
-Der App-Code ist von den lokalen Pflanzendaten getrennt. Normale Updates der Dateien im GitHub-Repository sollen die lokal gespeicherten Einträge nicht überschreiben.
+## GitHub Pages Update
+Zum Aktualisieren einfach die Dateien aus diesem Ordner im bestehenden Repository durch die v1.1-Dateien ersetzen. GitHub Pages veröffentlicht die neue Version automatisch. Die lokal gespeicherten Pflanzendaten werden dadurch nicht gelöscht.
