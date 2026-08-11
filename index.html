@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1d5d3d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Pflanzen">
+  <meta name="description" content="Private Pflanzen-Datenbank für Terrasse und Wohnung">
+  <title>Meine Pflanzen</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">Meine Pflanzendatenbank</div>
+      <h1>Meine Pflanzen</h1>
+      <div id="plantCount" class="subline">0 Pflanzen gespeichert</div>
+    </div>
+    <button id="settingsBtn" class="icon-btn" type="button" aria-label="Daten und Backup öffnen">⋯</button>
+  </header>
+
+  <main>
+    <section class="hero-card" aria-labelledby="heroTitle">
+      <div>
+        <span class="hero-icon" aria-hidden="true">🌿</span>
+        <h2 id="heroTitle">Alles Wichtige an einem Ort</h2>
+        <p>Fotos, Standort, Pflege und Beobachtungen zu deinen Pflanzen – lokal auf diesem Gerät gespeichert.</p>
+      </div>
+      <button id="addPlantBtn" class="primary" type="button">＋ Pflanze hinzufügen</button>
+    </section>
+
+    <section class="controls" aria-label="Pflanzen durchsuchen und filtern">
+      <label class="search-wrap" for="searchInput">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" inputmode="search" autocomplete="off" placeholder="Pflanze, Standort oder Notiz suchen …">
+      </label>
+      <div class="chips" role="group" aria-label="Filter">
+        <button class="chip active" type="button" data-filter="all">Alle</button>
+        <button class="chip" type="button" data-filter="Terrasse">Terrasse</button>
+        <button class="chip" type="button" data-filter="Wohnung">Wohnung</button>
+        <button class="chip" type="button" data-filter="Achtung">Pflegebedarf</button>
+      </div>
+    </section>
+
+    <section id="emptyState" class="empty-state">
+      <div class="empty-plant" aria-hidden="true">🪴</div>
+      <h2>Noch keine Pflanzen</h2>
+      <p>Lege deine erste Pflanze an. Ein Name reicht – alles Weitere kannst du später ergänzen.</p>
+      <button id="emptyAddBtn" class="primary" type="button">Erste Pflanze anlegen</button>
+    </section>
+
+    <section id="plantGrid" class="plant-grid" aria-live="polite"></section>
+  </main>
+
+  <button id="fabBtn" class="fab" type="button" aria-label="Pflanze hinzufügen">＋</button>
+
+  <dialog id="plantDialog" class="sheet-dialog">
+    <div class="sheet-head">
+      <h2 id="dialogTitle">Pflanze hinzufügen</h2>
+      <button id="closeDialogBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button>
+    </div>
+
+    <form id="plantForm">
+      <input id="plantId" type="hidden">
+
+      <div class="photo-editor">
+        <div id="photoPreview" class="photo-preview"><span aria-hidden="true">📷</span></div>
+        <div class="photo-actions">
+          <label class="secondary small" for="photoInput">Foto wählen</label>
+          <input id="photoInput" class="hidden" type="file" accept="image/*">
+          <button id="removePhotoBtn" class="text-btn" type="button">Foto entfernen</button>
+          <span class="fineprint">Fotos werden platzsparend verkleinert.</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label class="field full">
+          <span>Name *</span>
+          <input id="nameInput" type="text" required maxlength="100" autocomplete="off" placeholder="z. B. Agapanthus">
+        </label>
+
+        <label class="field full">
+          <span>Botanischer Name</span>
+          <input id="botanicalInput" type="text" maxlength="120" autocomplete="off" placeholder="optional">
+        </label>
+
+        <label class="field">
+          <span>Bereich</span>
+          <select id="areaInput">
+            <option>Terrasse</option>
+            <option>Wohnung</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Zustand</span>
+          <select id="statusInput">
+            <option>Gut</option>
+            <option>Beobachten</option>
+            <option>Achtung</option>
+          </select>
+        </label>
+
+        <label class="field full">
+          <span>Genauer Standort</span>
+          <input id="spotInput" type="text" maxlength="120" placeholder="z. B. Terrasse Süd, großer grauer Kübel">
+        </label>
+
+        <label class="field">
+          <span>Licht</span>
+          <select id="lightInput">
+            <option>Sonne</option>
+            <option>Halbschatten</option>
+            <option>Schatten</option>
+            <option>Hell, indirekt</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Topf / Kübel</span>
+          <input id="potInput" type="text" maxlength="100" placeholder="z. B. Ø 40 cm">
+        </label>
+
+        <label class="field full">
+          <span>Gießen</span>
+          <textarea id="wateringInput" rows="2" maxlength="600" placeholder="z. B. gleichmäßig feucht, keine Staunässe"></textarea>
+        </label>
+
+        <label class="field full">
+          <span>Düngen</span>
+          <textarea id="fertilizingInput" rows="2" maxlength="600" placeholder="z. B. April–August alle 2 Wochen"></textarea>
+        </label>
+
+        <label class="field full">
+          <span>Überwinterung</span>
+          <textarea id="winterInput" rows="2" maxlength="600" placeholder="z. B. hell und frostfrei"></textarea>
+        </label>
+
+        <label class="field full">
+          <span>Meine Notizen</span>
+          <textarea id="notesInput" rows="4" maxlength="1800" placeholder="Beobachtungen, Kaufdatum, Besonderheiten …"></textarea>
+        </label>
+
+        <label class="field full">
+          <span>Eigener Gärtner-Hinweis</span>
+          <textarea id="gardenerInput" rows="3" maxlength="1200" placeholder="Optionaler Pflegehinweis"></textarea>
+        </label>
+      </div>
+
+      <div class="generated-tip">
+        <strong>Gärtner-Tipp</strong>
+        <p id="generatedTipText"></p>
+      </div>
+
+      <div class="sheet-actions">
+        <button id="deletePlantBtn" class="danger hidden" type="button">Löschen</button>
+        <span class="spacer"></span>
+        <button id="cancelBtn" class="secondary" type="button">Abbrechen</button>
+        <button class="primary" type="submit">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dataDialog" class="sheet-dialog compact">
+    <div class="sheet-head">
+      <h2>Daten & Backup</h2>
+      <button id="closeDataBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button>
+    </div>
+    <div class="data-panel">
+      <h3>Deine Daten bleiben auf dem Handy</h3>
+      <p>Die Pflanzen und Fotos werden lokal in diesem Browser gespeichert. GitHub enthält nur die App, nicht deine privaten Einträge.</p>
+      <button id="exportBtn" class="primary wide" type="button">Backup exportieren</button>
+
+      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+
+      <h3>Backup wiederherstellen</h3>
+      <p>Ein Import ergänzt vorhandene Einträge. Pflanzen mit derselben ID werden mit dem Stand aus dem Backup aktualisiert.</p>
+      <label class="secondary wide center" for="importInput">Backup-Datei auswählen</label>
+      <input id="importInput" class="hidden" type="file" accept="application/json,.json">
+      <p class="fineprint" style="margin-top:18px">Tipp: Nach größeren Änderungen ein neues Backup in der Dateien-App speichern.</p>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
