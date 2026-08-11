@@ -1,23 +1,33 @@
-# Pflanzen Datenbank v1.1
+# My Plant Paradise v1.2
 
-Private, kostenlose Web-App für die persönliche Pflanzenverwaltung auf dem Handy. Statisch über GitHub Pages, ohne Server, kostenpflichtige Datenbank oder API.
+Private, mobile Pflanzen-Web-App für GitHub Pages. Keine zusätzlichen laufenden Kosten.
 
-## Neu in v1.1
-- Filter nach Überwinterungsart: draußen winterhart, frostfrei, drinnen, nicht nötig, noch offen
-- Filter und Steckbrief-Feld für einjährig / mehrjährig
-- separater Bereich **„Für später“** für Pflanzen, die erst künftig angeschafft oder gepflanzt werden sollen
-- Wunschpflanzen mit geplantem Platz, Jahr, Priorität und Grund/Notizen
-- Wunschpflanzen können mit **„Jetzt eingepflanzt“** in den normalen Bestand verschoben werden
-- **ChatGPT fragen** direkt aus dem Pflanzen-Steckbrief: Die App erstellt einen kontextreichen Prompt und kann strukturierte Angaben aus der zurückkopierten Antwort in die Formularfelder übernehmen
-- keine API-Kosten und kein API-Schlüssel in der App
+## Neu in v1.2
 
-## Wichtig zur ChatGPT-Funktion
-Die GitHub-Pages-App sendet keine Pflanzendaten automatisch an OpenAI. Beim Tippen auf „Frage für ChatGPT kopieren“ wird nur lokal ein Prompt erzeugt und in die Zwischenablage kopiert. Danach wird ChatGPT separat geöffnet. Die Antwort kann zurück in die App kopiert und ausgewertet werden.
+- Neuer App-Name **My Plant Paradise**
+- Neues Blatt-Icon für iPhone-Homescreen und PWA
+- Neues Branding mit dem Schriftzug **My Plant Paradise**
+- Claim: **Dein Paradies. Deine Pflanzen.**
+- Optimierte Kopfzeile für die Nutzung auf dem Handy
+- PWA-Metadaten und Offline-Cache auf v1.2 aktualisiert
+- Backup-Dateien tragen nun den App-Namen und die Versionsnummer 1.2
 
-## Datenspeicherung
-Alle Pflanzen, Wunschpflanzen und Fotos liegen lokal in IndexedDB des Browsers. Bestehende v1.0-Daten bleiben erhalten; fehlende neue Felder werden automatisch als „noch offen“ behandelt.
+## Bestehende Funktionen
 
-Regelmäßig über `…` > `Daten & Backup` eine JSON-Sicherung exportieren, besonders vor größeren Browser-/Geräteänderungen.
+- Pflanzen mit Foto und Steckbrief anlegen/bearbeiten
+- Terrasse und Wohnung
+- Suche und Filter
+- Überwinterungs- und Lebensdauerfilter
+- Bereich **Für später** für Pflanzenwünsche
+- ChatGPT-Frageworkflow ohne API-Kosten
+- Lokale Speicherung in IndexedDB
+- Backup und Wiederherstellung
+- Offline-/PWA-Unterstützung
 
-## GitHub Pages Update
-Zum Aktualisieren einfach die Dateien aus diesem Ordner im bestehenden Repository durch die v1.1-Dateien ersetzen. GitHub Pages veröffentlicht die neue Version automatisch. Die lokal gespeicherten Pflanzendaten werden dadurch nicht gelöscht.
+## Update auf GitHub
+
+Die Dateien aus diesem Ordner in deinem bestehenden Repository ersetzen bzw. ergänzen. GitHub Pages veröffentlicht die Änderung anschließend automatisch. Deine lokal gespeicherten Pflanzendaten werden durch dieses Update nicht gelöscht.
+
+### Wichtig fürs iPhone-Icon
+
+Wenn die alte Verknüpfung auf dem Homescreen noch das bisherige Icon zeigt, lösche nur die Homescreen-Verknüpfung und füge die Website danach erneut über **Teilen → Zum Home-Bildschirm** hinzu. Deine lokal gespeicherten Daten bleiben normalerweise im Safari-Webspeicher erhalten; vor größeren Änderungen ist trotzdem ein Backup sinnvoll.
