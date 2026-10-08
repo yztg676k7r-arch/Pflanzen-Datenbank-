@@ -1,16 +1,23 @@
-# My Plant Paradise v1.2
+# My Plant Paradise v1.3
 
 Private, mobile Pflanzen-Web-App für GitHub Pages. Keine zusätzlichen laufenden Kosten.
 
-## Neu in v1.2
+## Neu in v1.3
 
-- Neuer App-Name **My Plant Paradise**
-- Neues Blatt-Icon für iPhone-Homescreen und PWA
-- Neues Branding mit dem Schriftzug **My Plant Paradise**
-- Claim: **Dein Paradies. Deine Pflanzen.**
-- Optimierte Kopfzeile für die Nutzung auf dem Handy
-- PWA-Metadaten und Offline-Cache auf v1.2 aktualisiert
-- Backup-Dateien tragen nun den App-Namen und die Versionsnummer 1.2
+- Neuer Bereich **Archiv** neben „Meine Pflanzen“ und „Für später“
+- Aktive Pflanzen können über ihren Steckbrief ins Archiv verschoben werden
+- Archivierungsgründe: **Eingegangen**, **Saison beendet (einjährig)** oder **Nicht mehr aktiv / Sonstiges**
+- Archivierungsdatum und optionale Notiz bleiben am Pflanzeneintrag gespeichert
+- Archivierte Pflanzen behalten Fotos, Notizen, Standort- und Pflegeinformationen
+- Archivierte Pflanzen können mit einem Tipp wieder aktiviert werden
+- Mit **„Für nächstes Jahr“** kann aus einer archivierten Pflanze eine Wunschpflanze für das Folgejahr erstellt werden; der Archiveintrag bleibt erhalten
+- Doppelte „Für nächstes Jahr“-Einträge aus derselben Archivpflanze werden verhindert
+- Bei einjährigen Pflanzen wird beim Archivieren automatisch **„Saison beendet“** vorgeschlagen
+- Backupformat auf App-Version 1.3 / Schema 3 aktualisiert; ältere Backups bleiben importierbar
+
+## Daten bleiben erhalten
+
+Version 1.3 verwendet weiterhin dieselbe IndexedDB-Datenbank **`pflanzen-db`**, denselben Object Store **`plants`** und dieselbe Datenbankversion. Es ist keine Migration nötig. Bestehende Pflanzen aus v1.2 bleiben erhalten.
 
 ## Bestehende Funktionen
 
@@ -26,8 +33,8 @@ Private, mobile Pflanzen-Web-App für GitHub Pages. Keine zusätzlichen laufende
 
 ## Update auf GitHub
 
-Die Dateien aus diesem Ordner in deinem bestehenden Repository ersetzen bzw. ergänzen. GitHub Pages veröffentlicht die Änderung anschließend automatisch. Deine lokal gespeicherten Pflanzendaten werden durch dieses Update nicht gelöscht.
+Die Dateien aus diesem Ordner in deinem bestehenden Repository ersetzen bzw. ergänzen. GitHub Pages veröffentlicht die Änderung anschließend automatisch. Die lokalen Pflanzendaten werden durch dieses Update nicht gelöscht.
 
-### Wichtig fürs iPhone-Icon
+### iPhone / Offline-Cache
 
-Wenn die alte Verknüpfung auf dem Homescreen noch das bisherige Icon zeigt, lösche nur die Homescreen-Verknüpfung und füge die Website danach erneut über **Teilen → Zum Home-Bildschirm** hinzu. Deine lokal gespeicherten Daten bleiben normalerweise im Safari-Webspeicher erhalten; vor größeren Änderungen ist trotzdem ein Backup sinnvoll.
+Der Service-Worker-Cache wurde auf **v1.3.0** angehoben. Wenn auf dem Homescreen kurz noch die alte Oberfläche erscheint, die App vollständig schließen und erneut öffnen. Bei hartnäckigem Cache kann Safari einmal direkt aufgerufen werden.

@@ -32,6 +32,7 @@
     <nav class="section-tabs" aria-label="Bereiche">
       <button class="section-tab active" type="button" data-section="owned">🌿 Meine Pflanzen</button>
       <button class="section-tab" type="button" data-section="wishlist">♡ Für später</button>
+      <button class="section-tab" type="button" data-section="archive">🗂️ Archiv</button>
     </nav>
 
     <section class="hero-card" aria-labelledby="heroTitle">
@@ -124,6 +125,11 @@
         <strong>Gärtner-Tipp</strong><p id="generatedTipText"></p>
       </div>
 
+      <div id="archiveInfoBox" class="archive-info hidden">
+        <strong>🗂️ Archiviert</strong>
+        <p id="archiveInfoText"></p>
+      </div>
+
       <div class="assistant-inline">
         <div><strong>✨ ChatGPT fragen</strong><p>Frage mit dem gespeicherten Pflanzenwissen stellen und die Antwort anschließend in den Steckbrief übernehmen.</p></div>
         <button id="askPlantBtn" class="secondary" type="button">Frage stellen</button>
@@ -131,11 +137,27 @@
 
       <div class="sheet-actions">
         <button id="deletePlantBtn" class="danger hidden" type="button">Löschen</button>
+        <button id="archivePlantBtn" class="archive-action hidden" type="button">🗂️ Archivieren</button>
         <span class="spacer"></span>
         <button id="cancelBtn" class="secondary" type="button">Abbrechen</button>
         <button class="primary" type="submit">Speichern</button>
       </div>
     </form>
+  </dialog>
+
+
+  <dialog id="archiveDialog" class="sheet-dialog compact">
+    <div class="sheet-head"><h2>🗂️ Pflanze archivieren</h2><button id="closeArchiveBtn" class="icon-btn close" type="button" aria-label="Schließen">×</button></div>
+    <div class="data-panel">
+      <p>Die Pflanze bleibt mit Fotos, Notizen und Pflegewissen erhalten und verschwindet nur aus „Meine Pflanzen“.</p>
+      <label class="field"><span>Grund</span><select id="archiveReasonInput"><option value="eingegangen">Eingegangen</option><option value="saison-beendet">Saison beendet (einjährig)</option><option value="sonstiges">Nicht mehr aktiv / Sonstiges</option></select></label>
+      <label class="field archive-gap"><span>Datum</span><input id="archiveDateInput" type="date"></label>
+      <label class="field archive-gap"><span>Notiz (optional)</span><textarea id="archiveNoteInput" rows="3" maxlength="800" placeholder="z. B. nach dem ersten Frost entfernt, nächstes Jahr wieder kaufen …"></textarea></label>
+      <div class="archive-dialog-actions">
+        <button id="cancelArchiveBtn" class="secondary" type="button">Abbrechen</button>
+        <button id="confirmArchiveBtn" class="primary" type="button">Ins Archiv verschieben</button>
+      </div>
+    </div>
   </dialog>
 
   <dialog id="assistantDialog" class="sheet-dialog compact">
