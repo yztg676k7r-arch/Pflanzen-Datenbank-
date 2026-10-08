@@ -561,7 +561,20 @@ $('importInput').addEventListener('change', async e => {
   try {
     db = await openDB();
     await refresh();
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(e => console.warn('Service Worker:', e));
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+        registration.update().catch(e => console.warn('Service Worker Update:', e));
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (refreshing) return;
+          refreshing = true;
+          window.location.reload();
+        });
+      } catch (e) {
+        console.warn('Service Worker:', e);
+      }
+    }
   } catch (error) {
     console.error(error);
     document.body.innerHTML = '<main style="padding:30px"><h1>Die lokale Datenbank konnte nicht geöffnet werden.</h1><p>Bitte öffne die App nicht im privaten Browsermodus und prüfe, ob lokale Speicherung erlaubt ist.</p></main>';
